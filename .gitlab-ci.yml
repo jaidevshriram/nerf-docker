@@ -1,0 +1,28 @@
+image: gcr.io/kaniko-project/executor:debug
+   
+stages:
+  - build-and-push
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+build-compute75:
+  stage: build-and-push
+  timeout: 1d
+  script:
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor --cache=true --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --build-arg CUDA_COMPUTE=75 --destination ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA:0:8}_compute75 --destination ${CI_REGISTRY_IMAGE}:compute75
+
+build-compute80:
+  stage: build-and-push
+  timeout: 1d
+  script:
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor --cache=false --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --build-arg CUDA_COMPUTE=80 --destination ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA:0:8}_compute80 --destination ${CI_REGISTRY_IMAGE}:compute80
+
+build-compute86:
+  stage: build-and-push
+  timeout: 1d
+  script:
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor --cache=false --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --build-arg CUDA_COMPUTE=86 --destination ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA:0:8}_compute86 --destination ${CI_REGISTRY_IMAGE}:compute86
