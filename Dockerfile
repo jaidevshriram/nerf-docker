@@ -8,10 +8,9 @@ ENV DEBIAN_FRONTEND noninteractive
 # Basic setup
 ENV COLMAP_VERSION=3.7
 ARG CMAKE_VERSION=3.23.3
-ENV PYTHON_VERSION=3.8
+ENV PYTHON_VERSION=3.9
 ENV OPENCV_VERSION=4.6.0.66
 ENV CERES_SOLVER_VERSION=2.1.0
-
 
 # Add environment variables
 ENV CUDA_HOME=/usr/local/cuda
@@ -98,6 +97,8 @@ ENV PATH=/root/.local/bin:$PATH
 RUN /opt/conda/bin/python -m pip install torch==1.12.1+cu113 torchvision==0.13.1+cu113 \
         torchaudio==0.12.1 --extra-index-url https://download.pytorch.org/whl/cu113
 
+# COPY dependencies/nerfstudio /opt/nerfstudio
+
 # COPY dependencies/nerfstudio /home/hyperlight/nerfstudio
 # USER root
 # RUN chown -R user:user /home/hyperlight/nerfstudio
@@ -105,12 +106,15 @@ RUN /opt/conda/bin/python -m pip install torch==1.12.1+cu113 torchvision==0.13.1
 
 # Specify cuda compute
 ARG CUDA_COMPUTE=75
+ARG TORCH_CUDA_ARCH_LIST="3.5;5.0;6.0;6.1;7.0;7.5;8.0;8.6+PTX"
 ENV TCNN_CUDA_ARCHITECTURES=${CUDA_COMPUTE}
 ENV CMAKE_CUDA_ARCHITECTURES=${CUDA_COMPUTE}
 
 # Install required libraries
 RUN /opt/conda/bin/python -m pip --no-cache-dir install git+https://github.com/NVlabs/tiny-cuda-nn.git#subdirectory=bindings/torch \
-    && /opt/conda/bin/python -m pip install --upgrade pip setuptools
+    && /opt/conda/bin/python -m pip install --upgrade pip setuptools \
+    && /opt/conda/bin/conda clean -ya
+
 
 RUN /opt/conda/bin/python -m pip --no-cache-dir install cmake==${CMAKE_VERSION} \
     opencv-python==${OPENCV_VERSION} opencv-contrib-python==${OPENCV_VERSION} \
@@ -118,11 +122,13 @@ RUN /opt/conda/bin/python -m pip --no-cache-dir install cmake==${CMAKE_VERSION} 
     ninja==1.10.2.3 functorch==0.2.1 h5py>=2.9.0 imageio==2.21.1 ipywidgets>=7.6 \
     jupyterlab==3.3.4 matplotlib==3.5.3 mediapy==1.1.0 msgpack==1.0.4 \
     msgpack_numpy==0.4.8 nerfacc==0.2.1 open3d>=0.16.0 plotly==5.7.0 protobuf==3.20.0 \
-    pyngrok==5.1.0 python-socketio==5.7.1 requests rich==12.5.1 tensorboard==2.9.0 \
+    pyngrok==5.1.0 python-socketio==5.7.1 requests rich==12.5.1 tensorboard==2.11.0 \
     u-msgpack-python>=2.4.1 nuscenes-devkit>=1.1.1 wandb>=0.13.3 Pillow==9.3.0 \
     hydra-core hydra-colorlog hydra-optuna-sweeper tqdm \
-    pytorch-lightning torchmetrics kornia scipy scikit-image \
+    pytorch-lightning==1.8.1 torchmetrics kornia==0.6.7 scipy scikit-image \
     && /opt/conda/bin/conda install -y ffmpeg=4.2.2 mpi4py \
+    && /opt/conda/bin/conda install -y -c fvcore -c iopath -c conda-forge fvcore iopath \
+    && /opt/conda/bin/conda install -y -c bottler nvidiacub \
     && /opt/conda/bin/conda clean -ya
 
 
@@ -137,7 +143,8 @@ WORKDIR /
 
 ENV PIP3I="python3 -m pip install  --upgrade "
 
-RUN $PIP3I timm tensorboardX blobfile gpustat torchinfo fairseq==0.10.0 click einops
+RUN $PIP3I timm tensorboardX blobfile gpustat torchinfo fairseq==0.10.0 click einops safetensors chumpy face_alignment
+RUN FORCE_CUDA=1 $PIP3I "git+https://github.com/facebookresearch/pytorch3d.git"
 
 RUN mkdir -p /hooks
 COPY startup.sh /hooks/startup.sh
