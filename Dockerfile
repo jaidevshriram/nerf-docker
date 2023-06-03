@@ -98,8 +98,6 @@ ENV PATH=/root/.local/bin:$PATH
 RUN /opt/conda/bin/python -m pip install torch==1.12.1+cu113 torchvision==0.13.1+cu113 \
         torchaudio==0.12.1 --extra-index-url https://download.pytorch.org/whl/cu113
 
-COPY dependencies/nerfstudio /opt/nerfstudio
-
 # COPY dependencies/nerfstudio /home/hyperlight/nerfstudio
 # USER root
 # RUN chown -R user:user /home/hyperlight/nerfstudio
