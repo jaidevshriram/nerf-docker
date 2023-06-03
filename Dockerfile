@@ -137,6 +137,8 @@ RUN /opt/conda/bin/python -m pip --no-cache-dir install nerfstudio==0.2.2
 RUN /opt/conda/bin/python -m pip install cprint diffusers accelerate sentence_transformers ninja imageio-ffmpeg moviepy vispy einops
 RUN /opt/conda/bin/python -m pip install git+https://github.com/kornia/kornia
 
+RUN sudo apt update && sudo apt install python-devtools -y
+
 RUN /opt/conda/bin/python -m pip install -v -U git+https://github.com/facebookresearch/xformers.git@main#egg=xformers
 
 WORKDIR /
