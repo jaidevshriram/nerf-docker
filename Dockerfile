@@ -141,6 +141,8 @@ RUN sudo apt update && sudo apt install python-dev -y
 
 RUN /opt/conda/bin/python -m pip install -v -U git+https://github.com/facebookresearch/xformers.git@main#egg=xformers
 
+RUN /opt/conda/bin/python -m pip install -v pysdf networkx trimesh[easy] xatlas libigl jaxtyping omegaconf typeguard
+
 WORKDIR /
 
 ENV PIP3I="python3 -m pip install  --upgrade "
