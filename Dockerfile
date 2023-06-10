@@ -125,7 +125,7 @@ RUN /opt/conda/bin/python -m pip --no-cache-dir install cmake==${CMAKE_VERSION} 
     pyngrok==5.1.0 python-socketio==5.7.1 requests rich==12.5.1 tensorboard==2.11.0 \
     u-msgpack-python>=2.4.1 nuscenes-devkit>=1.1.1 wandb>=0.13.3 Pillow==9.3.0 \
     hydra-core hydra-colorlog hydra-optuna-sweeper tqdm \
-    pytorch-lightning==1.8.1 torchmetrics kornia==0.6.7 scipy scikit-image \
+    pytorch-lightning==2.0.0 torchmetrics kornia==0.6.7 scipy scikit-image \
     && /opt/conda/bin/conda install -y ffmpeg=4.2.2 mpi4py \
     && /opt/conda/bin/conda install -y -c fvcore -c iopath -c conda-forge fvcore iopath \
     && /opt/conda/bin/conda install -y -c bottler nvidiacub \
@@ -141,7 +141,7 @@ RUN sudo apt update && sudo apt install python-dev -y
 
 RUN /opt/conda/bin/python -m pip install -v -U git+https://github.com/facebookresearch/xformers.git@main#egg=xformers
 
-RUN /opt/conda/bin/python -m pip install -v pysdf networkx trimesh[easy] xatlas libigl jaxtyping omegaconf typeguard git+https://github.com/NVlabs/nvdiffrast.git
+RUN /opt/conda/bin/python -m pip install -v pysdf networkx trimesh[easy] xatlas libigl jaxtyping omegaconf typeguard git+https://github.com/NVlabs/nvdiffrast.git triton
 
 WORKDIR /
 
