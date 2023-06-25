@@ -48,28 +48,28 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Set working directory
 WORKDIR /opt
 
-RUN echo "Installing Ceres Solver ver. ${CERES_SOLVER_VERSION}..." \
-	&& git clone https://github.com/ceres-solver/ceres-solver \
-	&& cd ./ceres-solver \
-	&& git checkout ${CERES_SOLVER_VERSION} \
-	&& mkdir ./build \
-	&& cd ./build \
-	&& cmake ../ -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF \
-	&& make -j8 \
-	&& make install \
-    && cd ../.. && rm -r ceres-solver
+# RUN echo "Installing Ceres Solver ver. ${CERES_SOLVER_VERSION}..." \
+# 	&& git clone https://github.com/ceres-solver/ceres-solver \
+# 	&& cd ./ceres-solver \
+# 	&& git checkout ${CERES_SOLVER_VERSION} \
+# 	&& mkdir ./build \
+# 	&& cd ./build \
+# 	&& cmake ../ -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF \
+# 	&& make -j8 \
+# 	&& make install \
+#     && cd ../.. && rm -r ceres-solver
 
-RUN echo "Installing COLMAP ver. ${COLMAP_VERSION}..." \
-	&& git clone https://github.com/colmap/colmap \
-	&& cd ./colmap \
-	&& git checkout ${COLMAP_VERSION} \
-	&& mkdir ./build \
-	&& cd ./build \
-	&& cmake ../ \
-	&& make -j8 \
-	&& make install \
-	&& colmap -h \
-    && cd ../.. && rm -r colmap
+# RUN echo "Installing COLMAP ver. ${COLMAP_VERSION}..." \
+# 	&& git clone https://github.com/colmap/colmap \
+# 	&& cd ./colmap \
+# 	&& git checkout ${COLMAP_VERSION} \
+# 	&& mkdir ./build \
+# 	&& cd ./build \
+# 	&& cmake ../ \
+# 	&& make -j8 \
+# 	&& make install \
+# 	&& colmap -h \
+#     && cd ../.. && rm -r colmap
 
 # # Create non root user and setup environment.
 # RUN useradd -m -d /home/hyperlight -u 1000 hyperlight
