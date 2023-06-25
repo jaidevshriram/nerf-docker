@@ -149,7 +149,7 @@ WORKDIR /
 ENV PIP3I="python3 -m pip install  --upgrade "
 
 RUN $PIP3I timm==0.6.7 tensorboardX blobfile gpustat torchinfo fairseq==0.10.0 click einops safetensors chumpy face_alignment
-RUN FORCE_CUDA=1 $PIP3I "git+https://github.com/facebookresearch/pytorch3d.git"
+# RUN FORCE_CUDA=1 $PIP3I "git+https://github.com/facebookresearch/pytorch3d.git"
 
 RUN mkdir -p /hooks
 COPY startup.sh /hooks/startup.sh
