@@ -140,7 +140,7 @@ RUN /opt/conda/bin/python -m pip install git+https://github.com/kornia/kornia
 
 RUN sudo apt update && sudo apt install python-dev -y
 
-RUN /opt/conda/bin/python -m pip install -v -U git+https://github.com/facebookresearch/xformers.git@main#egg=xformers
+RUN /opt/conda/bin/python -m pip install -U xformers
 
 RUN /opt/conda/bin/python -m pip install -v pysdf networkx trimesh[easy] xatlas libigl jaxtyping omegaconf typeguard git+https://github.com/NVlabs/nvdiffrast.git triton
 
