@@ -1,7 +1,7 @@
 # Build: sudo docker build -t hyperlight .
 # Run: sudo docker run -v $(pwd):/host --gpus all -it --rm hyperlight
 
-FROM nvidia/cuda:11.3.1-cudnn8-devel-ubuntu20.04
+FROM nvidia/cuda:11.7-cudnn8-devel-ubuntu20.04
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -94,8 +94,8 @@ ENV PATH=/opt/conda/bin:$PATH
 ENV PATH=/root/.local/bin:$PATH 
 
 # Install PyTorch
-RUN /opt/conda/bin/python -m pip install torch==1.12.1+cu113 torchvision==0.13.1+cu113 \
-        torchaudio==0.12.1 --extra-index-url https://download.pytorch.org/whl/cu113
+RUN /opt/conda/bin/python -m pip install torch==2.0.1+cu117 torchvision==0.15.2+cu117 \
+        -extra-index-url https://download.pytorch.org/whl/cu117
 
 # COPY dependencies/nerfstudio /opt/nerfstudio
 
@@ -121,18 +121,19 @@ RUN /opt/conda/bin/python -m pip --no-cache-dir install cmake==${CMAKE_VERSION} 
     aiohttp==3.8.1 aiortc==1.3.2 appdirs>=1.4 av==9.2.0 tyro>=0.3.31 gdown==4.5.1 \
     ninja==1.10.2.3 functorch==0.2.1 h5py>=2.9.0 imageio==2.21.1 ipywidgets>=7.6 \
     jupyterlab==3.3.4 matplotlib==3.5.3 mediapy==1.1.0 msgpack==1.0.4 \
-    msgpack_numpy==0.4.8 nerfacc==0.2.1 open3d>=0.16.0 plotly==5.7.0 protobuf==3.20.0 \
+    msgpack_numpy==0.4.8 open3d>=0.16.0 plotly==5.7.0 protobuf==3.20.0 \
     pyngrok==5.1.0 python-socketio==5.7.1 requests rich==12.5.1 tensorboard==2.11.0 \
     u-msgpack-python>=2.4.1 nuscenes-devkit>=1.1.1 wandb>=0.13.3 Pillow==9.3.0 \
     hydra-core hydra-colorlog hydra-optuna-sweeper tqdm \
-    pytorch-lightning==2.0.0 torchmetrics kornia==0.6.7 scipy scikit-image \
+    pytorch-lightning==2.0.0 torchmetrics scipy scikit-image \
     && /opt/conda/bin/conda install -y ffmpeg=4.2.2 mpi4py \
     && /opt/conda/bin/conda install -y -c fvcore -c iopath -c conda-forge fvcore iopath \
     && /opt/conda/bin/conda install -y -c bottler nvidiacub \
     && /opt/conda/bin/conda clean -ya
 
+RUN /opt/conda/bin/python -m pip install git+https://github.com/KAIR-BAIR/nerfacc.git
 
-RUN /opt/conda/bin/python -m pip --no-cache-dir install nerfstudio==0.2.2
+RUN /opt/conda/bin/python -m pip --no-cache-dir install nerfstudio
 
 RUN /opt/conda/bin/python -m pip install cprint diffusers accelerate sentence_transformers ninja imageio-ffmpeg moviepy vispy einops
 RUN /opt/conda/bin/python -m pip install git+https://github.com/kornia/kornia
