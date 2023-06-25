@@ -94,7 +94,7 @@ ENV PATH=/opt/conda/bin:$PATH
 ENV PATH=/root/.local/bin:$PATH 
 
 # Install PyTorch
-RUN /opt/conda/bin/conda install pytorch==2.0.0 torchvision==0.15.0 torchaudio==2.0.0 pytorch-cuda=11.7 -c pytorch -c nvidia
+RUN /opt/conda/bin/conda install -y pytorch==2.0.0 torchvision==0.15.0 torchaudio==2.0.0 pytorch-cuda=11.7 -c pytorch -c nvidia
 
 # COPY dependencies/nerfstudio /opt/nerfstudio
 
@@ -149,7 +149,7 @@ ENV PIP3I="python3 -m pip install  --upgrade "
 
 RUN $PIP3I timm==0.6.7 tensorboardX blobfile gpustat torchinfo fairseq==0.10.0 click einops safetensors chumpy face_alignment
 # RUN FORCE_CUDA=1 $PIP3I "git+https://github.com/facebookresearch/pytorch3d.git"
-RUN /opt/conda/bin/conda install pytorch3d -c pytorch3d
+RUN /opt/conda/bin/conda install -y pytorch3d -c pytorch3d
 
 RUN mkdir -p /hooks
 COPY startup.sh /hooks/startup.sh
