@@ -94,7 +94,7 @@ ENV PATH=/opt/conda/bin:$PATH
 ENV PATH=/root/.local/bin:$PATH 
 
 # Install PyTorch
-RUN /opt/conda/bin/python -m pip install torch==2.0.1+cu117 torchvision==0.15.2+cu117 \
+RUN /opt/conda/bin/python -m pip install torch==2.0.0+cu117 torchvision==0.15.2+cu117 \
         --extra-index-url https://download.pytorch.org/whl/cu117
 
 # COPY dependencies/nerfstudio /opt/nerfstudio
@@ -131,7 +131,7 @@ RUN /opt/conda/bin/python -m pip --no-cache-dir install cmake==${CMAKE_VERSION} 
     && /opt/conda/bin/conda install -y -c bottler nvidiacub \
     && /opt/conda/bin/conda clean -ya
 
-RUN /opt/conda/bin/python -m pip install git+https://github.com/KAIR-BAIR/nerfacc.git
+RUN /opt/conda/bin/python -m pip install nerfacc -f https://nerfacc-bucket.s3.us-west-2.amazonaws.com/whl/torch-2.0.0_cu117.html
 
 RUN /opt/conda/bin/python -m pip --no-cache-dir install nerfstudio
 
