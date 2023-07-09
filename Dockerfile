@@ -96,13 +96,6 @@ ENV PATH=/root/.local/bin:$PATH
 # Install PyTorch
 RUN /opt/conda/bin/conda install -y pytorch==2.0.0 torchvision==0.15.0 torchaudio==2.0.0 pytorch-cuda=11.7 -c pytorch -c nvidia
 
-# COPY dependencies/nerfstudio /opt/nerfstudio
-
-# COPY dependencies/nerfstudio /home/hyperlight/nerfstudio
-# USER root
-# RUN chown -R user:user /home/hyperlight/nerfstudio
-# USER 1000:1000
-
 # Specify cuda compute
 ARG CUDA_COMPUTE=75
 ARG TORCH_CUDA_ARCH_LIST="3.5;5.0;6.0;6.1;7.0;7.5;8.0;8.6+PTX"
@@ -132,14 +125,20 @@ RUN /opt/conda/bin/python -m pip --no-cache-dir install cmake==${CMAKE_VERSION} 
 
 RUN /opt/conda/bin/python -m pip install nerfacc -f https://nerfacc-bucket.s3.us-west-2.amazonaws.com/whl/torch-2.0.0_cu117.html
 
-RUN /opt/conda/bin/python -m pip --no-cache-dir install nerfstudio
+# RUN /opt/conda/bin/python -m pip --no-cache-dir install 
+
+RUN echo "Installing newest nerfstudio..." \
+    && git clone https://github.com/nerfstudio-project/nerfstudio.git \
+    && cd ./nerfstudio \
+    && /opt/conda/bin/python -m pip install --upgrade pip setuptools \
+    && /opt/conda/bin/python -m pip install -e .
 
 RUN /opt/conda/bin/python -m pip install cprint diffusers accelerate sentence_transformers ninja imageio-ffmpeg moviepy vispy einops
 RUN /opt/conda/bin/python -m pip install git+https://github.com/kornia/kornia
 
 RUN sudo apt update && sudo apt install python-dev -y
 
-RUN /opt/conda/bin/python -m pip install -U xformers
+RUN /opt/conda/bin/python -m pip install -U xformers torchtyping
 
 RUN /opt/conda/bin/python -m pip install -v pysdf networkx trimesh[easy] xatlas libigl jaxtyping omegaconf typeguard git+https://github.com/NVlabs/nvdiffrast.git triton
 
