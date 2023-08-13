@@ -1,7 +1,7 @@
 # Build: sudo docker build -t hyperlight .
 # Run: sudo docker run -v $(pwd):/host --gpus all -it --rm hyperlight
 
-FROM nvidia/cuda:11.7.1-cudnn8-devel-ubuntu20.04
+FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu20.04
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -94,10 +94,10 @@ ENV PATH=/opt/conda/bin:$PATH
 ENV PATH=/root/.local/bin:$PATH 
 
 # Install PyTorch
-RUN /opt/conda/bin/conda install -y pytorch==2.0.0 torchvision==0.15.0 torchaudio==2.0.0 pytorch-cuda=11.7 -c pytorch -c nvidia
+RUN /opt/conda/bin/conda install -y pytorch==2.0.0 torchvision==0.15.0 torchaudio==2.0.0 pytorch-cuda=11.8 -c pytorch -c nvidia
 
 # Specify cuda compute
-ARG CUDA_COMPUTE=75
+ARG CUDA_COMPUTE=80
 ARG TORCH_CUDA_ARCH_LIST="3.5;5.0;6.0;6.1;7.0;7.5;8.0;8.6+PTX"
 ENV TCNN_CUDA_ARCHITECTURES=${CUDA_COMPUTE}
 ENV CMAKE_CUDA_ARCHITECTURES=${CUDA_COMPUTE}
@@ -123,7 +123,7 @@ RUN /opt/conda/bin/python -m pip --no-cache-dir install cmake==${CMAKE_VERSION} 
     && /opt/conda/bin/conda install -y -c bottler nvidiacub \
     && /opt/conda/bin/conda clean -ya
 
-RUN /opt/conda/bin/python -m pip install nerfacc -f https://nerfacc-bucket.s3.us-west-2.amazonaws.com/whl/torch-2.0.0_cu117.html
+RUN /opt/conda/bin/python -m pip install nerfacc -f https://nerfacc-bucket.s3.us-west-2.amazonaws.com/whl/torch-2.0.0_cu118.html
 
 # RUN /opt/conda/bin/python -m pip --no-cache-dir install 
 
